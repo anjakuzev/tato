@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Download Result</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+  <div class="container">
+    <h1>Вашата табела е готова! Превземи го фајлот.</h1>
+    <a href="{{ url_for('download_file', temp_dir=temp_dir, filename=filename) }}" class="green-button">Download Result File</a>
+  </div>
+</body>
+</html>

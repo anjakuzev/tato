@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Upload File</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+  <div class="container">
+    <h1>Ставете ја вашата табела</h1>
+    <form action="{{ url_for('process_file') }}" method="post" enctype="multipart/form-data">
+      <input type="file" name="file" accept=".xlsx,.csv" required>
+      <br>
+      <input type="text" name="monthly_hours" placeholder="Внеси ги вкупните часови на работа за овој месец" required>
+      <br>
+      <button type="submit" class="green-button">Стави</button>
+    </form>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="flash">
+          {% for message in messages %}
+            <p>{{ message }}</p>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+  </div>
+</body>
+</html>
