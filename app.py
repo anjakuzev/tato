@@ -312,7 +312,7 @@ def process_employee_entries(entries, monthly_hours):
             second_third_hours += 8
             log_message += " | shift '2' => second +8"
         elif shift == "2/3":
-            second_third_hours += 16
+            second_third_hours += hours_worked
             third_shift_hours += 8
             log_message += " | shift '2/3' => second +8, third +8"
         elif shift == "3":
@@ -324,7 +324,10 @@ def process_employee_entries(entries, monthly_hours):
             second_third_hours += 16
             third_shift_hours += 8
             log_message += " | shift '1/2/3'/'24' => first +8, second +8, third +8"
-        elif shift in {"ГО", "го"}:
+        elif shift in {"ГО", "го", "Го"}:
+            first_shift_hours += 8
+            log_message += " | shift 'ГО' (case-insensitive) => first shift +8"
+        elif shift in {"СЛ", "сл", "Сл"}:
             first_shift_hours += 8
             log_message += " | shift 'ГО' (case-insensitive) => first shift +8"
         elif shift in {"дпр", "ДПР"}:
