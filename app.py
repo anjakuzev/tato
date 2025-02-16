@@ -312,11 +312,11 @@ def process_employee_entries(entries, monthly_hours):
             second_third_hours += 8
             log_message += " | shift '2' => second +8"
         elif shift == "2/3":
-            second_third_hours += 8
+            second_third_hours += 16
             third_shift_hours += 8
             log_message += " | shift '2/3' => second +8, third +8"
         elif shift == "3":
-            second_third_hours += 16
+            second_third_hours += 8
             third_shift_hours += 8
             log_message += " | shift '3' => second +8, third +8"
         elif shift in {"1/2/3", "24"}:
