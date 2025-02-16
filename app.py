@@ -378,6 +378,7 @@ def process_employee_entries(entries, monthly_hours):
     return {
         "code": entries_sorted[0]["code"] if entries_sorted else "",
         "name": entries_sorted[0]["name"] if entries_sorted else "",
+        "total_hours": total_hours,  # New: Total Working Hours
         "overtime": overtime,
         "sunday work": sunday_work_hours,
         "overtime sunday work": overtime_sunday_work,
@@ -393,8 +394,9 @@ def generate_result_xlsx(results, output_path):
     wb = Workbook()
     ws = wb.active
     ws.title = "Резултати"
-    # Reorder headers as requested:
+    # Updated headers with "Вкупно работни часови" as the first column:
     headers = [
+        "Вкупно работни часови",  # Total Working Hours
         "Шифра", 
         "Име и Презиме", 
         "Прва смена", 
@@ -408,11 +410,13 @@ def generate_result_xlsx(results, output_path):
         "Прекувремена работа", 
     ]
     ws.append(headers)
-    column_widths = [12, 24, 12, 24, 12, 28, 18, 12, 18, 22, 18]
+    # Update column widths (added one for the new column)
+    column_widths = [18, 12, 24, 12, 24, 12, 28, 18, 12, 18, 22, 18]
     for i, width in enumerate(column_widths, start=1):
         ws.column_dimensions[get_column_letter(i)].width = width
     for r in results:
         row = [
+            r["total_hours"],  # Total working hours
             r["code"],
             r["name"],
             r["first shift"],
