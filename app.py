@@ -358,7 +358,7 @@ def process_employee_entries(entries, monthly_hours):
                     overtime_sunday_work += 8
                     log_message += " | Overtime Sunday: fixed +8h"
             elif actual_day == "Saturday":
-                if shift in {"24", "1/2/3", "д", "3", "Д", "дпр", "ДПР"}:
+                if shift in {"24", "1/2/3", "д","2/3", "3", "Д", "дпр", "ДПР"}:
                     overtime_sunday_work += 6
                     log_message += " | Overtime Saturday: fixed +6h"
                 elif shift == "2/3":
