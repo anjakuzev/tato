@@ -394,11 +394,11 @@ def generate_result_xlsx(results, output_path):
     wb = Workbook()
     ws = wb.active
     ws.title = "Резултати"
-    # Updated headers with "Вкупно работни часови" as the first column:
+    # Updated headers with "Вкупно работни часови" after the name column:
     headers = [
-        "Вкупно работни часови",  # Total Working Hours
         "Шифра", 
         "Име и Презиме", 
+        "Вкупно работни часови",  # Total Working Hours after the name
         "Прва смена", 
         "Втора и Трета смена заедно", 
         "Трета смена", 
@@ -410,15 +410,15 @@ def generate_result_xlsx(results, output_path):
         "Прекувремена работа", 
     ]
     ws.append(headers)
-    # Update column widths (added one for the new column)
-    column_widths = [18, 12, 24, 12, 24, 12, 28, 18, 12, 18, 22, 18]
+    # Update column widths accordingly (12 columns in total)
+    column_widths = [12, 24, 18, 12, 24, 12, 28, 18, 12, 18, 22, 18]
     for i, width in enumerate(column_widths, start=1):
         ws.column_dimensions[get_column_letter(i)].width = width
     for r in results:
         row = [
-            r["total_hours"],  # Total working hours
             r["code"],
             r["name"],
+            r["total_hours"],  # Total working hours now appears after the name
             r["first shift"],
             r["second+third shift"],
             r["third shift"],
