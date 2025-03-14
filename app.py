@@ -216,7 +216,7 @@ def process_employee_entries(entries, monthly_hours):
     Process a list of daily records for one employee.
     Calculates total hours, overtime (total_hours - monthly_hours),
     and computes "overtime sunday work" based on overtime portions.
-    (Rules: for Sunday, certain shift codes add fixed values, for Saturday similar.)
+    (Duty shifts are not counted in total working hours or overtime.)
     """
     entries_sorted = sorted(
         entries,
@@ -252,6 +252,9 @@ def process_employee_entries(entries, monthly_hours):
     dezurstva = 0.0
     hours_per_dezurstvo = 0.0
 
+    # Define the duty shifts that should not count towards working hours/overtime
+    duty_shifts = {"д", "Д", "дпр", "ДПР", "д8", "Д8", "д16", "Д16"}
+
     app.logger.info(f"Processing employee {entries_sorted[0]['name']} (code: {entries_sorted[0]['code']})")
     for entry in entries_sorted:
         try:
@@ -260,22 +263,26 @@ def process_employee_entries(entries, monthly_hours):
             day_val = 0
         day_index = (reference_index + (day_val - reference_date)) % 7
         actual_day = day_index_to_name[day_index]
-        hours_worked = parse_hours(entry["hours"])
-        total_hours += hours_worked
-
-        # Calculate overtime for this record:
-        if cumulative >= monthly_hours:
-            overtime_today = hours_worked
-        elif cumulative + hours_worked > monthly_hours:
-            overtime_today = (cumulative + hours_worked) - monthly_hours
-        else:
-            overtime_today = 0.0
-        cumulative += hours_worked
-
         shift = entry["shift"]
+        hours_worked = parse_hours(entry["hours"])
+
+        # Only count hours for overtime/total if it's NOT a duty shift.
+        if shift not in duty_shifts:
+            total_hours += hours_worked
+            if cumulative >= monthly_hours:
+                overtime_today = hours_worked
+            elif cumulative + hours_worked > monthly_hours:
+                overtime_today = (cumulative + hours_worked) - monthly_hours
+            else:
+                overtime_today = 0.0
+            cumulative += hours_worked
+        else:
+            # For duty shifts, we do not add their hours to total working hours or cumulative overtime.
+            overtime_today = 0.0
+
         log_message = f"Date: {day_val}, Day: {entry['day']} -> {actual_day}, Shift: {shift}, Hours: {hours_worked}"
 
-        # Existing Sunday work adjustments:
+        # Existing Sunday work adjustments remain (they are processed regardless of counting for overtime)
         if actual_day == "Sunday":
             if shift in {"24", "1/2/3"}:
                 sunday_work_hours += 18
@@ -289,17 +296,17 @@ def process_employee_entries(entries, monthly_hours):
             elif shift == "1/2":
                 sunday_work_hours += hours_worked
                 log_message += f" | Sunday shift '1/2' => +{hours_worked}h"
-            elif shift in {"д", "Д", "дпр", "ДПР"}:
+            elif shift in {"д", "Д", "дпр", "ДПР", "Д16", "д16"}:
                 sunday_work_hours += 18
-                log_message += " | Sunday shift 'Д/ДПР' => +18h"
+                log_message += f" | Sunday duty shift '{shift}' => +18h"
             elif shift == "1":
                 sunday_work_hours += 8
-                log_message += " | Overtime Sunday: fixed +8h"
+                log_message += " | Sunday shift '1' => +8h"
         elif actual_day == "Saturday" and shift in {"24", "1/2/3", "2/3", "3", "д", "Д", "дпр", "ДПР"}:
             sunday_work_hours += 6
             log_message += " | Saturday shift => +6h for Sunday"
 
-        # Count shift hours:
+        # Count shift-specific hours (these branches still run even for duty shifts)
         if shift == "1":
             first_shift_hours += 8
             log_message += " | shift '1' => first shift +8"
@@ -332,17 +339,17 @@ def process_employee_entries(entries, monthly_hours):
             log_message += " | shift 'ГО' (case-insensitive) => first shift +8"
         elif shift in {"СЛ", "сл", "Сл"}:
             first_shift_hours += 8
-            log_message += " | shift 'ГО' (case-insensitive) => first shift +8"
+            log_message += " | shift 'СЛ' (case-insensitive) => first shift +8"
         elif shift in {"дпр", "ДПР"}:
             holidays += hours_worked
             hours_per_dezurstvo += 8
             log_message += f" | shift '{shift}' => holidays +{hours_worked}, dezurstvo +8"
-        elif shift in {"д", "Д"}:
+        elif shift in {"д", "Д", "Д8", "д8", "Д16", "д16"}:
             dezurstva += hours_worked
             hours_per_dezurstvo += 8
             log_message += f" | shift '{shift}' => dezurstva +{hours_worked}, dezurstvo +8"
 
-        # NEW: Overtime Sunday Work Adjustment (Прекувремена работа во недела)
+        # Overtime Sunday Work Adjustment (only for non-duty shifts since overtime_today is 0 for duty)
         if overtime_today > 0:
             if actual_day == "Sunday":
                 if shift in {"24", "1/2/3", "д", "Д", "дпр", "ДПР"}:
@@ -361,7 +368,7 @@ def process_employee_entries(entries, monthly_hours):
                     overtime_sunday_work += 8
                     log_message += " | Overtime Sunday: fixed +8h"
             elif actual_day == "Saturday":
-                if shift in {"24", "1/2/3", "д","2/3", "3", "Д", "дпр", "ДПР"}:
+                if shift in {"24", "1/2/3", "д", "2/3", "3", "Д", "дпр", "ДПР"}:
                     overtime_sunday_work += 6
                     log_message += " | Overtime Saturday: fixed +6h"
                 elif shift == "2/3":
@@ -384,7 +391,7 @@ def process_employee_entries(entries, monthly_hours):
     return {
         "code": entries_sorted[0]["code"] if entries_sorted else "",
         "name": entries_sorted[0]["name"] if entries_sorted else "",
-        "total_hours": total_hours,  # New: Total Working Hours
+        "total_hours": total_hours,  # Total working hours (excluding duty shifts)
         "overtime": overtime,
         "sunday work": sunday_work_hours,
         "overtime sunday work": overtime_sunday_work,
