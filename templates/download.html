@@ -2,13 +2,58 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>AI KUZEVI</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0a0f1c">
+  <title>AI KUZEVI - Next-Gen Hospital Management</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 </head>
 <body>
+  <!-- AI-inspired animated logo -->
+  <div class="logo">AI KUZEVI</div>
+
+  <!-- Neural network nodes background -->
+  <div class="nodes"></div>
+
   <div class="container">
-    <h1>Вашата табела е готова! Превземи го фајлот.</h1>
-    <a href="{{ url_for('download_file', temp_dir=temp_dir, filename=filename) }}" class="green-button">ПРЕВЗЕМИ</a>
+    <h1>Вашата табела е готова!</h1>
+    <a href="{{ url_for('download_file', temp_dir=temp_dir, filename=filename) }}" class="green-button">
+      <!-- AI-inspired Download Icon -->
+      <svg viewBox="0 0 24 24" style="width: 20px; height: 20px;">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" 
+              stroke="currentColor" 
+              stroke-width="2" 
+              fill="none" 
+              stroke-linecap="round" 
+              stroke-linejoin="round"/>
+      </svg>
+      ПРЕВЗЕМИ
+    </a>
   </div>
+
+  <!-- Neural network animation script -->
+  <script>
+    function createNodes() {
+      const nodes = document.querySelector('.nodes');
+      const numNodes = 50;
+      
+      for (let i = 0; i < numNodes; i++) {
+        const node = document.createElement('div');
+        node.style.cssText = `
+          position: absolute;
+          width: 2px;
+          height: 2px;
+          background: rgba(0, 242, 254, ${Math.random() * 0.5});
+          border-radius: 50%;
+          top: ${Math.random() * 100}%;
+          left: ${Math.random() * 100}%;
+          animation: pulse ${2 + Math.random() * 2}s infinite;
+        `;
+        nodes.appendChild(node);
+      }
+    }
+    createNodes();
+  </script>
 </body>
 </html>

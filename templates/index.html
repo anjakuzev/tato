@@ -2,18 +2,50 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0a0f1c">
   <title>AI KUZEVI</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,
+  %3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E
+    %3Crect width='64' height='64' fill='%230a0f1c'/%3E
+    %3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle'
+      font-family='Arial, sans-serif' font-size='36' fill='white'%3EK%3C/text%3E
+  %3C/svg%3E">
+
 </head>
 <body>
+  <!-- AI-inspired animated logo -->
+  <div class="logo">AI KUZEVI</div>
+
+  <!-- Neural network nodes background -->
+  <div class="nodes"></div>
+
   <div class="container">
     <h1>Ставете ја вашата табела</h1>
     <form action="{{ url_for('process_file') }}" method="post" enctype="multipart/form-data">
-      <input type="file" name="file" accept=".xlsx,.csv" required>
-      <br>
-      <input type="text" name="monthly_hours" placeholder="Внеси ги вкупните часови на работа за овој месец" required>
-      <br>
-      <button type="submit" class="green-button">Стави</button>
+      <div style="position: relative;">
+        <input type="file" name="file" accept=".xlsx,.csv" required>
+      </div>
+      
+      <div style="position: relative;">
+        <input type="text" name="monthly_hours" placeholder="Внеси ги вкупните часови на работа за овој месец" required>
+      </div>
+      
+      <button type="submit" class="green-button">
+        <!-- AI-inspired Upload Icon -->
+        <svg viewBox="0 0 24 24" style="width: 20px; height: 20px;">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12" 
+                stroke="currentColor" 
+                stroke-width="2" 
+                fill="none" 
+                stroke-linecap="round" 
+                stroke-linejoin="round"/>
+        </svg>
+        Стави
+      </button>
     </form>
     {% with messages = get_flashed_messages() %}
       {% if messages %}
@@ -25,5 +57,29 @@
       {% endif %}
     {% endwith %}
   </div>
+
+  <!-- Neural network animation script -->
+  <script>
+    function createNodes() {
+      const nodes = document.querySelector('.nodes');
+      const numNodes = 50;
+      
+      for (let i = 0; i < numNodes; i++) {
+        const node = document.createElement('div');
+        node.style.cssText = `
+          position: absolute;
+          width: 2px;
+          height: 2px;
+          background: rgba(0, 242, 254, ${Math.random() * 0.5});
+          border-radius: 50%;
+          top: ${Math.random() * 100}%;
+          left: ${Math.random() * 100}%;
+          animation: pulse ${2 + Math.random() * 2}s infinite;
+        `;
+        nodes.appendChild(node);
+      }
+    }
+    createNodes();
+  </script>
 </body>
 </html>

@@ -1,50 +1,283 @@
-body {
-  font-family: Arial, sans-serif;
-  background-color: #f2f2f2;
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600&display=swap');
+
+/* Simple professional logo style */
+.logo {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 20px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.9);
+  letter-spacing: 0.5px;
+  z-index: 10;
+}
+
+/* Keep all existing styles unchanged */
+:root {
+  --neon-blue: #00f2fe;
+  --neon-purple: #4facfe;
+  --dark-bg: #0a0f1c;
+  --card-bg: rgba(16, 20, 34, 0.6);
+  --text: #e2e8f0;
+  --highlight: #00f2fe;
+  --border: rgba(255, 255, 255, 0.1);
+}
+
+* {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  min-height: 100vh;
+  background: var(--dark-bg);
+  background-image: 
+    radial-gradient(circle at 20% 20%, rgba(0, 242, 254, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(79, 172, 254, 0.1) 0%, transparent 50%);
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Neural network background effect */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    linear-gradient(90deg, var(--border) 1px, transparent 1px),
+    linear-gradient(var(--border) 1px, transparent 1px);
+  background-size: 40px 40px;
+  mask-image: radial-gradient(circle at 50% 50%, black, transparent);
+  opacity: 0.2;
+  z-index: 0;
+  animation: gridMove 20s linear infinite;
 }
 
 .container {
-  width: 50%;
-  margin: 100px auto;
-  text-align: center;
-  background-color: #fff;
-  padding: 50px;
-  border-radius: 8px;
-  box-shadow: 0 0 15px rgba(0,0,0,0.1);
+  width: 90%;
+  max-width: 600px;
+  margin: 20px;
+  background: var(--card-bg);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  padding: 40px;
+  position: relative;
+  z-index: 1;
+  box-shadow: 
+    0 0 40px rgba(0, 242, 254, 0.1),
+    inset 0 0 20px rgba(79, 172, 254, 0.05);
+  animation: pulseGlow 4s ease-in-out infinite;
+}
+
+/* Futuristic corner accents */
+.container::before,
+.container::after {
+  content: '';
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  border: 2px solid var(--highlight);
+  opacity: 0.5;
+}
+
+.container::before {
+  top: -2px;
+  left: -2px;
+  border-right: none;
+  border-bottom: none;
+  border-radius: 12px 0 0 0;
+}
+
+.container::after {
+  bottom: -2px;
+  right: -2px;
+  border-left: none;
+  border-top: none;
+  border-radius: 0 0 12px 0;
 }
 
 h1 {
-  color: #333;
-  margin-bottom: 30px;
+  color: var(--text);
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  text-align: center;
+  letter-spacing: 1px;
+  position: relative;
+  text-shadow: 0 0 10px rgba(0, 242, 254, 0.3);
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
 input[type="file"],
 input[type="text"] {
-  margin-bottom: 20px;
-  padding: 10px;
-  width: 80%;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  width: 100%;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  color: var(--text);
+  font-family: inherit;
+  transition: all 0.3s ease;
+}
+
+input[type="text"]:focus {
+  outline: none;
+  border-color: var(--highlight);
+  box-shadow: 0 0 15px rgba(0, 242, 254, 0.2);
+}
+
+input[type="text"]::placeholder {
+  color: rgba(226, 232, 240, 0.5);
+}
+
+input[type="file"] {
+  cursor: pointer;
+}
+
+input[type="file"]::-webkit-file-upload-button {
+  background: linear-gradient(135deg, var(--neon-purple), var(--neon-blue));
+  border: none;
+  border-radius: 8px;
+  color: var(--dark-bg);
+  padding: 0.5rem 1rem;
+  margin-right: 1rem;
+  cursor: pointer;
+  font-family: inherit;
+  font-weight: 600;
+  transition: all 0.3s ease;
 }
 
 .green-button {
-  background-color: #28a745;
-  color: white;
-  padding: 15px 32px;
-  font-size: 16px;
+  background: linear-gradient(135deg, var(--neon-purple), var(--neon-blue));
+  color: var(--dark-bg);
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
   border: none;
-  border-radius: 4px;
+  border-radius: 12px;
   cursor: pointer;
   text-decoration: none;
+  text-align: center;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.green-button::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(135deg, var(--neon-purple), var(--neon-blue));
+  border-radius: 14px;
+  z-index: -1;
+  animation: borderGlow 2s linear infinite;
 }
 
 .green-button:hover {
-  background-color: #218838;
+  transform: translateY(-2px);
+  box-shadow: 0 0 20px rgba(0, 242, 254, 0.4);
 }
 
 .flash {
-  margin-top: 20px;
-  color: red;
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background: rgba(255, 0, 0, 0.1);
+  border: 1px solid rgba(255, 0, 0, 0.2);
+  border-radius: 12px;
+  color: #ff4e4e;
+  animation: flashPulse 2s infinite;
+}
+
+/* High-tech animations */
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 
+      0 0 40px rgba(0, 242, 254, 0.1),
+      inset 0 0 20px rgba(79, 172, 254, 0.05);
+  }
+  50% {
+    box-shadow: 
+      0 0 60px rgba(0, 242, 254, 0.2),
+      inset 0 0 30px rgba(79, 172, 254, 0.1);
+  }
+}
+
+@keyframes borderGlow {
+  0%, 100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+@keyframes gridMove {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(40px);
+  }
+}
+
+@keyframes flashPulse {
+  0%, 100% {
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* Neural network nodes animation */
+.nodes {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .container {
+    width: 95%;
+    padding: 30px;
+  }
+
+  h1 {
+    font-size: 1.75rem;
+  }
+
+  .green-button {
+    padding: 0.875rem 1.75rem;
+  }
+
+  .logo {
+    font-size: 18px;
+  }
 }

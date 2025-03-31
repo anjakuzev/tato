@@ -377,12 +377,6 @@ def process_employee_entries(entries, monthly_hours):
                 elif shift == "3":
                     overtime_sunday_work += 2
                     log_message += " | Overtime Saturday: fixed +2h"
-                elif shift == "1/2":
-                    overtime_sunday_work += overtime_today
-                    log_message += f" | Overtime Saturday: using overtime portion +{overtime_today}h"
-                elif shift in {"1", "2"}:
-                    overtime_sunday_work += 8
-                    log_message += " | Overtime Saturday: fixed +8h"
 
         app.logger.debug(log_message)
 
