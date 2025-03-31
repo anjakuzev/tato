@@ -1,5 +1,61 @@
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600&display=swap');
 
+/* Theme variables */
+:root {
+  /* Dark theme (default) */
+  --neon-blue: #00f2fe;
+  --neon-purple: #4facfe;
+  --dark-bg: #0a0f1c;
+  --card-bg: rgba(16, 20, 34, 0.6);
+  --text: #e2e8f0;
+  --highlight: #00f2fe;
+  --border: rgba(255, 255, 255, 0.1);
+  --input-bg: rgba(255, 255, 255, 0.03);
+}
+
+/* Light theme */
+[data-theme="light"] {
+  --neon-blue: #2563eb;
+  --neon-purple: #3b82f6;
+  --dark-bg: #f1f5f9;
+  --card-bg: rgba(255, 255, 255, 0.9);
+  --text: #1e293b;
+  --highlight: #3b82f6;
+  --border: rgba(0, 0, 0, 0.1);
+  --input-bg: rgba(0, 0, 0, 0.02);
+}
+
+/* Theme toggle button */
+.theme-toggle {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: transparent;
+  border: 2px solid var(--border);
+  color: var(--text);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  transition: all 0.3s ease;
+}
+
+.theme-toggle:hover {
+  background: var(--border);
+}
+
+.theme-toggle svg {
+  width: 20px;
+  height: 20px;
+  stroke: var(--text);
+  stroke-width: 2;
+  transition: all 0.3s ease;
+}
+
 /* Simple professional logo style */
 .logo {
   position: fixed;
@@ -8,20 +64,9 @@
   font-family: 'Space Grotesk', sans-serif;
   font-size: 20px;
   font-weight: 500;
-  color: rgba(255, 255, 255, 0.9);
+  color: var(--text);
   letter-spacing: 0.5px;
   z-index: 10;
-}
-
-/* Keep all existing styles unchanged */
-:root {
-  --neon-blue: #00f2fe;
-  --neon-purple: #4facfe;
-  --dark-bg: #0a0f1c;
-  --card-bg: rgba(16, 20, 34, 0.6);
-  --text: #e2e8f0;
-  --highlight: #00f2fe;
-  --border: rgba(255, 255, 255, 0.1);
 }
 
 * {
@@ -35,14 +80,15 @@ body {
   min-height: 100vh;
   background: var(--dark-bg);
   background-image: 
-    radial-gradient(circle at 20% 20%, rgba(0, 242, 254, 0.1) 0%, transparent 50%),
-    radial-gradient(circle at 80% 80%, rgba(79, 172, 254, 0.1) 0%, transparent 50%);
+    radial-gradient(circle at 20% 20%, color-mix(in srgb, var(--highlight) 10%, transparent), transparent 50%),
+    radial-gradient(circle at 80% 80%, color-mix(in srgb, var(--neon-purple) 10%, transparent), transparent 50%);
   color: var(--text);
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
   overflow: hidden;
+  transition: all 0.3s ease;
 }
 
 /* Neural network background effect */
@@ -75,9 +121,10 @@ body::before {
   position: relative;
   z-index: 1;
   box-shadow: 
-    0 0 40px rgba(0, 242, 254, 0.1),
-    inset 0 0 20px rgba(79, 172, 254, 0.05);
+    0 0 40px color-mix(in srgb, var(--highlight) 10%, transparent),
+    inset 0 0 20px color-mix(in srgb, var(--neon-purple) 5%, transparent);
   animation: pulseGlow 4s ease-in-out infinite;
+  transition: all 0.3s ease;
 }
 
 /* Futuristic corner accents */
@@ -89,6 +136,7 @@ body::before {
   height: 40px;
   border: 2px solid var(--highlight);
   opacity: 0.5;
+  transition: all 0.3s ease;
 }
 
 .container::before {
@@ -114,7 +162,8 @@ h1 {
   text-align: center;
   letter-spacing: 1px;
   position: relative;
-  text-shadow: 0 0 10px rgba(0, 242, 254, 0.3);
+  text-shadow: 0 0 10px color-mix(in srgb, var(--highlight) 30%, transparent);
+  transition: all 0.3s ease;
 }
 
 form {
@@ -127,7 +176,7 @@ input[type="file"],
 input[type="text"] {
   width: 100%;
   padding: 1rem;
-  background: rgba(255, 255, 255, 0.03);
+  background: var(--input-bg);
   border: 1px solid var(--border);
   border-radius: 12px;
   color: var(--text);
@@ -138,11 +187,11 @@ input[type="text"] {
 input[type="text"]:focus {
   outline: none;
   border-color: var(--highlight);
-  box-shadow: 0 0 15px rgba(0, 242, 254, 0.2);
+  box-shadow: 0 0 15px color-mix(in srgb, var(--highlight) 20%, transparent);
 }
 
 input[type="text"]::placeholder {
-  color: rgba(226, 232, 240, 0.5);
+  color: color-mix(in srgb, var(--text) 50%, transparent);
 }
 
 input[type="file"] {
@@ -153,7 +202,7 @@ input[type="file"]::-webkit-file-upload-button {
   background: linear-gradient(135deg, var(--neon-purple), var(--neon-blue));
   border: none;
   border-radius: 8px;
-  color: var(--dark-bg);
+  color: white;
   padding: 0.5rem 1rem;
   margin-right: 1rem;
   cursor: pointer;
@@ -164,7 +213,7 @@ input[type="file"]::-webkit-file-upload-button {
 
 .green-button {
   background: linear-gradient(135deg, var(--neon-purple), var(--neon-blue));
-  color: var(--dark-bg);
+  color: white;
   padding: 1rem 2rem;
   font-size: 1rem;
   font-weight: 600;
@@ -197,7 +246,7 @@ input[type="file"]::-webkit-file-upload-button {
 
 .green-button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 0 20px rgba(0, 242, 254, 0.4);
+  box-shadow: 0 0 20px color-mix(in srgb, var(--highlight) 40%, transparent);
 }
 
 .flash {
@@ -214,13 +263,13 @@ input[type="file"]::-webkit-file-upload-button {
 @keyframes pulseGlow {
   0%, 100% {
     box-shadow: 
-      0 0 40px rgba(0, 242, 254, 0.1),
-      inset 0 0 20px rgba(79, 172, 254, 0.05);
+      0 0 40px color-mix(in srgb, var(--highlight) 10%, transparent),
+      inset 0 0 20px color-mix(in srgb, var(--neon-purple) 5%, transparent);
   }
   50% {
     box-shadow: 
-      0 0 60px rgba(0, 242, 254, 0.2),
-      inset 0 0 30px rgba(79, 172, 254, 0.1);
+      0 0 60px color-mix(in srgb, var(--highlight) 20%, transparent),
+      inset 0 0 30px color-mix(in srgb, var(--neon-purple) 10%, transparent);
   }
 }
 
