@@ -296,7 +296,7 @@ def process_employee_entries(entries, monthly_hours):
             elif shift == "1/2":
                 sunday_work_hours += hours_worked
                 log_message += f" | Sunday shift '1/2' => +{hours_worked}h"
-            elif shift in {"д", "Д", "дпр", "ДПР", "Д16", "д16"}:
+            elif shift in {"д", "Д", "дпр", "ДПР", "Д16", "д16", "Д24","д24","д17,5","Д17,5","д17.5","Д17.5"}:
                 sunday_work_hours += 18
                 log_message += f" | Sunday duty shift '{shift}' => +18h"
             elif shift == "1":
@@ -344,7 +344,7 @@ def process_employee_entries(entries, monthly_hours):
             holidays += hours_worked
             hours_per_dezurstvo += 8
             log_message += f" | shift '{shift}' => holidays +{hours_worked}, dezurstvo +8"
-        elif shift in {"д", "Д", "Д8", "д8", "Д16", "д16"}:
+        elif shift in {"д", "Д", "Д8", "д8", "Д16", "д16","Д24","д24","д11","Д11","д17,5","Д17,5","д17.5","Д17.5"}:
             dezurstva += hours_worked
             hours_per_dezurstvo += 8
             log_message += f" | shift '{shift}' => dezurstva +{hours_worked}, dezurstvo +8"
@@ -368,7 +368,7 @@ def process_employee_entries(entries, monthly_hours):
                     overtime_sunday_work += 8
                     log_message += " | Overtime Sunday: fixed +8h"
             elif actual_day == "Saturday":
-                if shift in {"24", "1/2/3", "д", "2/3", "3", "Д", "дпр", "ДПР"}:
+                if shift in {"24", "1/2/3", "д", "2/3", "3", "Д", "дпр", "ДПР", "Д24","д24"}:
                     overtime_sunday_work += 6
                     log_message += " | Overtime Saturday: fixed +6h"
                 elif shift == "2/3":
